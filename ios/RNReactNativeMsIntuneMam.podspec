@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.description  = <<-DESC
                   RNReactNativeMsIntuneMam
                    DESC
-  s.homepage     = ""
+  s.homepage     = "https://github.com/deep0410/react-native-ms-intune-mam"
   s.license      = "MIT"
   # s.license      = { :type => "MIT", :file => "FILE_LICENSE" }
   s.author             = { "author" => "author@domain.cn" }
