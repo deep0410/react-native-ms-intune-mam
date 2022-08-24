@@ -31,7 +31,7 @@ repositories {
 }
 
 dependencies {
-     compile fileTree(dir: '../IntuneSDK/android/libs', include: ['*.jar'])
-     compile project(':ReactAndroid')
+     implementation fileTree(dir: '../IntuneSDK/android/libs', include: ['*.jar'])
+     implementation project(':ReactAndroid')
 }
   
