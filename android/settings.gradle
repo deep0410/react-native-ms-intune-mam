@@ -1,2 +1,0 @@
-  include(":ReactAndroid")
-  project(":ReactAndroid").projectDir = new File(["node", "--print", "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim(), "../ReactAndroid");
