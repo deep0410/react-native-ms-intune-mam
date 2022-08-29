@@ -15,5 +15,8 @@
     "url": "git+https://github.com/deep0410/react-native-ms-intune-mam.git "
   },
   "author": "Deep Patel",
-  "license": "MIT"
+  "license": "MIT",
+  "peerDependencies": {
+    "react-native": "^0.47.0"
+  }
 }
