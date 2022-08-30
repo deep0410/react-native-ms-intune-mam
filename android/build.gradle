@@ -34,8 +34,10 @@ android {
 
 repositories {
     mavenCentral()
+    google()
 }
 
 dependencies {
-     implementation fileTree(dir: '../IntuneSDK/android/libs', include: ['*.jar'])
+    implementation fileTree(dir: '../IntuneSDK/android/libs', include: ['*.jar'])
+    implementation ('com.microsoft.identity.client:msal:2.2.3')
 }
