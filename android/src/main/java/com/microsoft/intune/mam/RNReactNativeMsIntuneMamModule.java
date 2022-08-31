@@ -24,7 +24,7 @@ import com.microsoft.intune.mam.client.identity.MAMPolicyManager;
 import com.microsoft.intune.mam.client.identity.MAMPolicyManagerBehavior;
 import com.microsoft.intune.mam.client.identity.MAMSetUIIdentityCallback;
 import com.microsoft.intune.mam.client.notification.MAMNotificationReceiverRegistry;
-import com.microsoft.intune.mam.log.MAMLogHandlerWrapper;
+// import com.microsoft.intune.mam.log.MAMLogHandlerWrapper;
 import com.microsoft.intune.mam.policy.MAMEnrollmentManager;
 import com.microsoft.intune.mam.policy.MAMServiceAuthenticationCallback;
 import com.microsoft.intune.mam.policy.MAMUserInfo;
@@ -54,7 +54,7 @@ public class RNReactNativeMsIntuneMamModule extends ReactContextBaseJavaModule {
 //            enrollmentManager.registerAuthenticationCallback(serviceAuthenticationCallback);
 //        }
 
-        MAMComponents.get(MAMLogHandlerWrapper.class).addHandler(new AndroidHandler(), true);
+        // MAMComponents.get(MAMLogHandlerWrapper.class).addHandler(new AndroidHandler(), true);
 //        MAMComponents.get(MAMNotificationReceiverRegistry.class).registerReceiver(new RNReactNativeNotificationReceiver(reactContext), MAMNotificationType.MANAGEMENT_REMOVED);
         MAMComponents.get(MAMNotificationReceiverRegistry.class).registerReceiver(new RNReactNativeNotificationReceiver(reactContext), MAMNotificationType.MAM_ENROLLMENT_RESULT);
         MAMComponents.get(MAMNotificationReceiverRegistry.class).registerReceiver(new RNReactNativeNotificationReceiver(reactContext), MAMNotificationType.WIPE_USER_DATA);
