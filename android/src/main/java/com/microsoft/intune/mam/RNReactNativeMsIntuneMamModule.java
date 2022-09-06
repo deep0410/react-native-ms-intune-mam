@@ -135,11 +135,11 @@ public class RNReactNativeMsIntuneMamModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void launchActivtyToInstallCompnayAppPortal() {
-        reactContext.getCurrentActivity().startActivityForResult(createIntentForInstallCompanyPortal(), -1);
+        getCurrentActivity().startActivityForResult(createIntentForInstallCompanyPortal(), -1);
     }
 
     private Intent createIntentForInstallCompanyPortal() {
-        Intent localIntent = new Intent(reactContext.getCurrentActivity(), OfflineInstallCompanyPortalDialogActivity.class);
+        Intent localIntent = new Intent(getCurrentActivity(), OfflineInstallCompanyPortalDialogActivity.class);
         localIntent.setFlags(268435456);
         localIntent.putExtra("activityLaunchBlocked", true);
         return localIntent;
@@ -200,7 +200,7 @@ public class RNReactNativeMsIntuneMamModule extends ReactContextBaseJavaModule {
             final String tenantId,
             final String token,
             final Promise promise) {
-        final Activity activity = reactContext.getCurrentActivity();
+        final Activity activity = getCurrentActivity();
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -252,7 +252,7 @@ public class RNReactNativeMsIntuneMamModule extends ReactContextBaseJavaModule {
     public void updateProcessIdentity(final String identity,
                                       final Promise promise) {
         try {
-            final Activity activity = reactContext.getCurrentActivity();
+            final Activity activity = getCurrentActivity();
             MAMIdentitySwitchResult result = MAMPolicyManager.setCurrentThreadIdentity(identity);
             if (result != null) {
                 Log.d("Intune", result.name());
@@ -326,7 +326,7 @@ public class RNReactNativeMsIntuneMamModule extends ReactContextBaseJavaModule {
 //        reactContext.getCurrentActivity().startActivity(localIntent);
 //        reactContext.getCurrentActivity().recreate();
 
-        final Activity activity = reactContext.getCurrentActivity();
+        final Activity activity = getCurrentActivity();
         if(activity != null){
             activity.runOnUiThread((new Runnable() {
                 @Override
