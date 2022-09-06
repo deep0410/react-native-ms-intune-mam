@@ -39,4 +39,5 @@ repositories {
 
 dependencies {
     implementation fileTree(dir: '../IntuneSDK/android/libs', include: ['*.jar'])
+    implementation "com.facebook.react:react-native:+"  // From node_modules
 }
