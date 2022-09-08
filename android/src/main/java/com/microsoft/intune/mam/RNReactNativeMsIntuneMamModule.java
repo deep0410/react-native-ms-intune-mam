@@ -66,6 +66,11 @@ public class RNReactNativeMsIntuneMamModule extends ReactContextBaseJavaModule {
         return "RNReactNativeMsIntuneMam";
     }
 
+    @Override    
+    public boolean canOverrideExistingModule() {        
+        return true;    
+    } 
+
     @ReactMethod
     public void deRegisterAndUnenrollAccount(
             final String identity,
