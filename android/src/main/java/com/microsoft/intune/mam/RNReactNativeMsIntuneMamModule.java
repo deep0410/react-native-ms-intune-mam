@@ -43,11 +43,13 @@ public class RNReactNativeMsIntuneMamModule extends ReactContextBaseJavaModule {
 
     private final ReactApplicationContext reactContext;
     private MAMServiceAuthenticationCallback serviceAuthenticationCallback;
+    private MAMEnrollmentManager mEnrollmentManager;
 
 
     public RNReactNativeMsIntuneMamModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
+        mEnrollmentManager = MAMComponents.get(MAMEnrollmentManager.class);
 //        MAMEnrollmentManager enrollmentManager = MAMComponents.get(MAMEnrollmentManager.class);
 //        if (enrollmentManager != null) {
 //            serviceAuthenticationCallback = new RNMAMServiceAuthenticationCallback();
@@ -210,16 +212,16 @@ public class RNReactNativeMsIntuneMamModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 try {
-                    MAMEnrollmentManager enrollmentManager = MAMComponents.get(MAMEnrollmentManager.class);
+                    // MAMEnrollmentManager enrollmentManager = MAMComponents.get(MAMEnrollmentManager.class);
                     // if (serviceAuthenticationCallback == null) {
                     //     serviceAuthenticationCallback = new RNMAMServiceAuthenticationCallback();
                     //     enrollmentManager.registerAuthenticationCallback(serviceAuthenticationCallback);
                     //     ((RNMAMServiceAuthenticationCallback) serviceAuthenticationCallback).updateToken(token);
                     // }
 
-                    if (enrollmentManager != null) {
+                    if (mEnrollmentManager != null) {
                         //enrollmentManager.unregisterAccountForMAM(identity);
-                        enrollmentManager.registerAccountForMAM(identity, aadId, tenantId);
+                        mEnrollmentManager.registerAccountForMAM(identity, aadId, tenantId);
 
 //                        MAMIdentitySwitchResult result = MAMPolicyManager.setCurrentThreadIdentity(identity);
 //                        if (result != null) {
