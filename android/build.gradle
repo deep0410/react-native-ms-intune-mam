@@ -49,7 +49,7 @@ allprojects {
             url("$rootDir/../node_modules/react-native/android")
         }
 
-         google()
+        google()
         mavenCentral {
             // We don't want to fetch react-native from Maven Central as there are
             // older versions over there.
@@ -64,7 +64,6 @@ allprojects {
 dependencies {
     implementation fileTree(dir: '../IntuneSDK/android/libs', include: ['*.jar'])
     implementation "com.facebook.soloader:soloader:0.10.4+"
-    implementation "com.facebook.react:react-native:+"  // From node_modules
     // Include the MAM SDK
     implementation files('../IntuneSDK/android/libs/Microsoft.Intune.MAM.SDK.jar')
     // Include MSAL
