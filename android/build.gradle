@@ -7,6 +7,7 @@ buildscript {
 
     dependencies {
         classpath('com.android.tools.build:gradle:7.0.4')
+        classpath files("libs/com.microsoft.intune.mam.build.jar")
     }
 }
 
@@ -66,7 +67,7 @@ dependencies {
     implementation "com.facebook.soloader:soloader:0.10.4+"
     implementation "com.facebook.react:react-native:0.68.2"  // From node_modules
     // Include the MAM SDK
-    implementation files('../IntuneSDK/android/libs/Microsoft.Intune.MAM.SDK.jar')
+    implementation files('../IntuneSDK/android/libs/Microsoft.Intune.MAM.SDK.aar')
     // Include MSAL
     implementation 'com.microsoft.identity.client:msal:2.0.8'
 }

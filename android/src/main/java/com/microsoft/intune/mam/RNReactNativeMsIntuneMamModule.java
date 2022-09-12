@@ -50,16 +50,6 @@ public class RNReactNativeMsIntuneMamModule extends ReactContextBaseJavaModule {
         super(reactContext);
         this.reactContext = reactContext;
         mEnrollmentManager = MAMComponents.get(MAMEnrollmentManager.class);
-        if(MAMComponents != null) {
-            
-        } else {
-            Log.e("MAMComponents", "exception: NOT THERE ##########################");
-        }
-        if(MAMEnrollmentManager != null) {
-           
-        }else {
-            Log.e("MAMEnrollmentManager", "exception: NOT THERE ##########################");
-        }
 
 //        MAMEnrollmentManager enrollmentManager = MAMComponents.get(MAMEnrollmentManager.class);
 //        if (enrollmentManager != null) {
