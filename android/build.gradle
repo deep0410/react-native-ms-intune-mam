@@ -57,13 +57,6 @@ allprojects {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url("$rootDir/../node_modules/react-native/android")
         }
-        google()
-        jcenter()
-        maven {
-            // ADD THESE TWO LINES:
-            url 'https://pkgs.dev.azure.com/MicrosoftDeviceSDK/DuoSDK-Public/_packaging/Duo-SDK-Feed/maven/v1'
-            name 'Duo-SDK-Feed'
-        }
 
         google()
         mavenCentral {
