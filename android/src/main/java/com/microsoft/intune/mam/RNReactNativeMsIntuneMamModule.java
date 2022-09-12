@@ -49,7 +49,6 @@ public class RNReactNativeMsIntuneMamModule extends ReactContextBaseJavaModule {
     public RNReactNativeMsIntuneMamModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
-        mEnrollmentManager = MAMComponents.get(MAMEnrollmentManager.class);
 //        MAMEnrollmentManager enrollmentManager = MAMComponents.get(MAMEnrollmentManager.class);
 //        if (enrollmentManager != null) {
 //            serviceAuthenticationCallback = new RNMAMServiceAuthenticationCallback();
@@ -218,6 +217,7 @@ public class RNReactNativeMsIntuneMamModule extends ReactContextBaseJavaModule {
                     //     enrollmentManager.registerAuthenticationCallback(serviceAuthenticationCallback);
                     //     ((RNMAMServiceAuthenticationCallback) serviceAuthenticationCallback).updateToken(token);
                     // }
+                    mEnrollmentManager = MAMComponents.get(MAMEnrollmentManager.class);
                     if (mEnrollmentManager != null) {
                         //enrollmentManager.unregisterAccountForMAM(identity);
                         mEnrollmentManager.registerAccountForMAM(identity, aadId, tenantId);

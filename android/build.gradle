@@ -11,6 +11,7 @@ buildscript {
 }
 
 apply plugin: 'com.android.library'
+apply plugin: 'com.microsoft.intune.mam'
 
 android {
     compileSdkVersion 31
