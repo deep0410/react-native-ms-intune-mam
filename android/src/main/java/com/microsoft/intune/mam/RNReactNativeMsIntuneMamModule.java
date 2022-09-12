@@ -49,6 +49,18 @@ public class RNReactNativeMsIntuneMamModule extends ReactContextBaseJavaModule {
     public RNReactNativeMsIntuneMamModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
+        mEnrollmentManager = MAMComponents.get(MAMEnrollmentManager.class);
+        if(MAMComponents != null) {
+            
+        } else {
+            Log.e("MAMComponents", "exception: NOT THERE ##########################");
+        }
+        if(MAMEnrollmentManager != null) {
+           
+        }else {
+            Log.e("MAMEnrollmentManager", "exception: NOT THERE ##########################");
+        }
+
 //        MAMEnrollmentManager enrollmentManager = MAMComponents.get(MAMEnrollmentManager.class);
 //        if (enrollmentManager != null) {
 //            serviceAuthenticationCallback = new RNMAMServiceAuthenticationCallback();
@@ -217,13 +229,7 @@ public class RNReactNativeMsIntuneMamModule extends ReactContextBaseJavaModule {
                     //     enrollmentManager.registerAuthenticationCallback(serviceAuthenticationCallback);
                     //     ((RNMAMServiceAuthenticationCallback) serviceAuthenticationCallback).updateToken(token);
                     // }
-                    mEnrollmentManager = MAMComponents.get(MAMEnrollmentManager.class);
-                    if(MAMComponents == null) {
-                        Log.e("MAMComponents", "exception: NOT THERE ##########################");
-                    }
-                    if(MAMEnrollmentManager == null) {
-                        Log.e("MAMEnrollmentManager", "exception: NOT THERE ##########################");
-                    }
+                    
                     if (mEnrollmentManager != null) {
                         //enrollmentManager.unregisterAccountForMAM(identity);
                         mEnrollmentManager.registerAccountForMAM(identity, aadId, tenantId);
