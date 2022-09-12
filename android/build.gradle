@@ -8,9 +8,9 @@ buildscript {
     dependencies {
         classpath('com.android.tools.build:gradle:7.0.4')
         // ADD THIS:
-        classpath "org.javassist:javassist:3.27.0-GA"
+        // classpath "org.javassist:javassist:3.27.0-GA"
         // Capacitor users: add reference to the gradle plugin
-        classpath files("libs/com.microsoft.intune.mam.build.jar")
+        // classpath files("libs/com.microsoft.intune.mam.build.jar")
         // Cordova users: add this line instead
         // classpath files("./app/src/main/libs/com.microsoft.intune.mam.build.jar")
     }
