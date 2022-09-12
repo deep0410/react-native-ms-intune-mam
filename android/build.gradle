@@ -17,6 +17,7 @@ buildscript {
 }
 
 apply plugin: 'com.android.library'
+// apply plugin: 'com.microsoft.intune.mam'
 
 android {
     compileSdkVersion 31
@@ -54,6 +55,13 @@ allprojects {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url("$rootDir/../node_modules/react-native/android")
         }
+        //  google()
+        // jcenter()
+        // maven {
+        //     // ADD THESE TWO LINES:
+        //     url 'https://pkgs.dev.azure.com/MicrosoftDeviceSDK/DuoSDK-Public/_packaging/Duo-SDK-Feed/maven/v1'
+        //     name 'Duo-SDK-Feed'
+        // }
 
         google()
         mavenCentral {
@@ -68,11 +76,11 @@ allprojects {
 }
 
 dependencies {
-    implementation fileTree(dir: '../IntuneSDK/android/libs', include: ['*.jar'])
+    // implementation fileTree(dir: '../IntuneSDK/android/libs', include: ['*.jar'])
     implementation "com.facebook.soloader:soloader:0.10.4+"
     implementation "com.facebook.react:react-native:0.68.2"  // From node_modules
     // Include the MAM SDK
     implementation files('../IntuneSDK/android/libs/Microsoft.Intune.MAM.SDK.aar')
     // Include MSAL
-    implementation 'com.microsoft.identity.client:msal:2.0.8'
+    implementation 'com.microsoft.identity.client:msal:2.2.3'
 }
