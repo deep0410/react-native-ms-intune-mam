@@ -8,9 +8,9 @@ buildscript {
     dependencies {
         classpath('com.android.tools.build:gradle:7.0.4')
         // ADD THIS:
-        // classpath "org.javassist:javassist:3.27.0-GA"
+        classpath "org.javassist:javassist:3.27.0-GA"
         // Capacitor users: add reference to the gradle plugin
-        // classpath files("libs/com.microsoft.intune.mam.build.jar")
+        classpath files("libs/com.microsoft.intune.mam.build.jar")
         // Cordova users: add this line instead
         // classpath files("./app/src/main/libs/com.microsoft.intune.mam.build.jar")
     }
@@ -43,17 +43,20 @@ allprojects {
     repositories {
         mavenLocal()
         jcenter()
+        maven { url "$rootDir/../node_modules/react-native/android" }
+        // maven {
+        //     // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+        //     url(new File(['node', '--print', "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim(), '../android'))
+        // }
+        // maven {
+        //     // Android JSC is installed from npm
+        //     url(new File(['node', '--print', "require.resolve('jsc-android/package.json')"].execute(null, rootDir).text.trim(), '../dist'))
+        // }
+        google()
+        jcenter()
+        mavenCentral()
         maven {
-            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-            url(new File(['node', '--print', "require.resolve('react-native/package.json')"].execute(null, rootDir).text.trim(), '../android'))
-        }
-        maven {
-            // Android JSC is installed from npm
-            url(new File(['node', '--print', "require.resolve('jsc-android/package.json')"].execute(null, rootDir).text.trim(), '../dist'))
-        }
-        maven {
-            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-            url("$rootDir/../node_modules/react-native/android")
+            url 'https://pkgs.dev.azure.com/MicrosoftDeviceSDK/DuoSDK-Public/_packaging/Duo-SDK-Feed/maven/v1'
         }
         //  google()
         // jcenter()
@@ -76,8 +79,13 @@ allprojects {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    // implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "com.facebook.soloader:soloader:0.10.4+"
-    implementation 'com.microsoft.identity.client:msal:2.2.3'
-    implementation "com.facebook.react:react-native:0.68.2"  // From node_modules
+    implementation "com.facebook.react:react-native:+"  // From node_modules
+
+     // Include the MAM SDK
+    implementation files('libs/Microsoft.Intune.MAM.SDK.aar')
+
+    // Include MSAL
+    implementation 'com.microsoft.identity.client:msal:2.0.8'
 }
