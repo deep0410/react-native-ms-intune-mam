@@ -213,13 +213,12 @@ public class RNReactNativeMsIntuneMamModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 try {
-                    // MAMEnrollmentManager enrollmentManager = MAMComponents.get(MAMEnrollmentManager.class);
-                    // if (serviceAuthenticationCallback == null) {
-                    //     serviceAuthenticationCallback = new RNMAMServiceAuthenticationCallback();
-                    //     enrollmentManager.registerAuthenticationCallback(serviceAuthenticationCallback);
-                    //     ((RNMAMServiceAuthenticationCallback) serviceAuthenticationCallback).updateToken(token);
-                    // }
                     MAMEnrollmentManager enrollmentManager = MAMComponents.get(MAMEnrollmentManager.class);
+                    if (serviceAuthenticationCallback == null) {
+                        serviceAuthenticationCallback = new RNMAMServiceAuthenticationCallback();
+                        enrollmentManager.registerAuthenticationCallback(serviceAuthenticationCallback);
+                        ((RNMAMServiceAuthenticationCallback) serviceAuthenticationCallback).updateToken(token);
+                    }
                     
                     if (enrollmentManager != null) {
                         //enrollmentManager.unregisterAccountForMAM(identity);
