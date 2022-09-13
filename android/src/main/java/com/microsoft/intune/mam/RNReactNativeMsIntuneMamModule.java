@@ -43,7 +43,7 @@ public class RNReactNativeMsIntuneMamModule extends ReactContextBaseJavaModule {
 
     private final ReactApplicationContext reactContext;
     private MAMServiceAuthenticationCallback serviceAuthenticationCallback;
-    private MAMEnrollmentManager mEnrollmentManager;
+    private static MAMEnrollmentManager mEnrollmentManager;
 
 
     public RNReactNativeMsIntuneMamModule(ReactApplicationContext reactContext) {
