@@ -1,6 +1,6 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.microsoft.intune.mam">
-
+    <application android:name="com.microsoft.intune.mam.client.app.MAMApplication"></application>
 </manifest>
   

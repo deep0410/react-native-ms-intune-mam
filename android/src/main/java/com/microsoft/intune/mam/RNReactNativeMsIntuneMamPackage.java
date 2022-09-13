@@ -13,7 +13,7 @@ import com.facebook.react.bridge.JavaScriptModule;
 
 public class RNReactNativeMsIntuneMamPackage implements ReactPackage {
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-      return Arrays.<NativeModule>asList(new RNReactNativeMsIntuneMamModule(reactContext));
+      return Arrays.<NativeModule>asList((NativeModule) new RNReactNativeMsIntuneMamModule(reactContext));
     }
 
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {

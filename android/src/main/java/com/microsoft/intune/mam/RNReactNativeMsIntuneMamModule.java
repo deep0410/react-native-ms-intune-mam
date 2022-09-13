@@ -43,13 +43,13 @@ public class RNReactNativeMsIntuneMamModule extends ReactContextBaseJavaModule {
 
     private final ReactApplicationContext reactContext;
     private MAMServiceAuthenticationCallback serviceAuthenticationCallback;
-    private static MAMEnrollmentManager mEnrollmentManager;
+    //private static MAMEnrollmentManager mEnrollmentManager;
 
 
     public RNReactNativeMsIntuneMamModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
-        mEnrollmentManager = MAMComponents.get(MAMEnrollmentManager.class);
+//        mEnrollmentManager = MAMComponents.get(MAMEnrollmentManager.class);
 
 //        MAMEnrollmentManager enrollmentManager = MAMComponents.get(MAMEnrollmentManager.class);
 //        if (enrollmentManager != null) {
@@ -219,13 +219,14 @@ public class RNReactNativeMsIntuneMamModule extends ReactContextBaseJavaModule {
                     //     enrollmentManager.registerAuthenticationCallback(serviceAuthenticationCallback);
                     //     ((RNMAMServiceAuthenticationCallback) serviceAuthenticationCallback).updateToken(token);
                     // }
-                    if(mEnrollmentManager == null) {
+                    MAMEnrollmentManager enrollmentManager = MAMComponents.get(MAMEnrollmentManager.class);
+                    if(enrollmentManager == null) {
                         Log.e("mEnrollmentManager", "exception: NOT THERE ##########################");
                     }
                     
-                    if (mEnrollmentManager != null) {
+                    if (enrollmentManager != null) {
                         //enrollmentManager.unregisterAccountForMAM(identity);
-                        mEnrollmentManager.registerAccountForMAM(identity, aadId, tenantId);
+                        enrollmentManager.registerAccountForMAM(identity, aadId, tenantId);
 
 //                        MAMIdentitySwitchResult result = MAMPolicyManager.setCurrentThreadIdentity(identity);
 //                        if (result != null) {
