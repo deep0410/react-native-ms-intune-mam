@@ -84,7 +84,7 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
      // Include the MAM SDK
-    implementation files('libs/Microsoft.Intune.MAM.SDK.aar')
+    // implementation files('libs/Microsoft.Intune.MAM.SDK.aar')
 
     // Include MSAL
     implementation 'com.microsoft.identity.client:msal:2.0.8'
