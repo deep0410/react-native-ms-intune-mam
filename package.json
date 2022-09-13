@@ -16,7 +16,10 @@
   },
   "author": "Deep Patel",
   "license": "MIT",
+  "dependencies": {
+    "react-native": "0.68.2"
+  },
   "peerDependencies": {
-    "react-native": "^0.63.2"
+    "react-native": "0.68.2"
   }
 }
