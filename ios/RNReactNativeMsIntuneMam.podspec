@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name         = "RNReactNativeMsIntuneMam"
-  s.version      = "1.3.1"
+  s.version      = "1.3.2"
   s.summary      = "RNReactNativeMsIntuneMam"
   s.description  = <<-DESC
                   RNReactNativeMsIntuneMam
@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   # s.license      = { :type => "MIT", :file => "FILE_LICENSE" }
   s.author             = { "author" => "author@domain.cn" }
   s.platform     = :ios, "7.0"
-  s.source       = { :git => "https://github.com/deep0410/react-native-ms-intune-mam.git", :tag => "v1.3.1" }
+  s.source       = { :git => "https://github.com/deep0410/react-native-ms-intune-mam.git", :tag => "v1.3.2" }
   s.source_files  = "RNReactNativeMsIntuneMam/**/*.{h,m}"
   s.requires_arc = true
 
