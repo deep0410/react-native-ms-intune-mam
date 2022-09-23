@@ -71,7 +71,7 @@ RCT_REMAP_METHOD(registerAndEnrollAccount,
                  rejecter:(RCTPromiseRejectBlock)reject ){
     @try{
         IntuneMAMEnrollmentManager* intuneMAMEnrollmentManager = [IntuneMAMEnrollmentManager instance];
-        [self.delegate restartApplication];
+        // [self.delegate restartApplication];
         if(forceLogin){
             [intuneMAMEnrollmentManager loginAndEnrollAccount:identity];
         }
@@ -83,8 +83,10 @@ RCT_REMAP_METHOD(registerAndEnrollAccount,
             @try{
                 IntuneMAMPolicyManager* policyManager = [IntuneMAMPolicyManager instance];
                 NSString* primaryUser = [policyManager primaryUser];
+                NSLog(@"text is %@.", primaryUser);
                 [policyManager setProcessIdentity:identity];
                 NSString* uiIdentity = [policyManager getUIPolicyIdentity];
+                NSLog(@"text is %@.", uiIdentity);
                 [policyManager setUIPolicyIdentity:identity
                                  completionHandler:^(IntuneMAMSwitchIdentityResult result) {
                                      
