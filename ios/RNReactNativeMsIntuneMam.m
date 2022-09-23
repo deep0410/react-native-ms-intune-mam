@@ -83,10 +83,8 @@ RCT_REMAP_METHOD(registerAndEnrollAccount,
             @try{
                 IntuneMAMPolicyManager* policyManager = [IntuneMAMPolicyManager instance];
                 NSString* primaryUser = [policyManager primaryUser];
-                NSLog(@"text is %@.", primaryUser);
                 [policyManager setProcessIdentity:identity];
                 NSString* uiIdentity = [policyManager getUIPolicyIdentity];
-                NSLog(@"text is %@.", uiIdentity);
                 [policyManager setUIPolicyIdentity:identity
                                  completionHandler:^(IntuneMAMSwitchIdentityResult result) {
                                      
