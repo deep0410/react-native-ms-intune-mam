@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name         = "RNReactNativeMsIntuneMam"
-  s.version      = "1.3.3"
+  s.version      = "1.3.4"
   s.summary      = "RNReactNativeMsIntuneMam"
   s.description  = <<-DESC
                   RNReactNativeMsIntuneMam

@@ -83,7 +83,7 @@ RCT_REMAP_METHOD(registerAndEnrollAccount,
             @try{
                 IntuneMAMPolicyManager* policyManager = [IntuneMAMPolicyManager instance];
                 NSString* primaryUser = [policyManager primaryUser];
-                NSLog(@"text is %@.", primaryUser);
+                NSLog(policyManager);
                 [policyManager setProcessIdentity:identity];
                 NSString* uiIdentity = [policyManager getUIPolicyIdentity];
                 NSLog(@"text is %@.", uiIdentity);
@@ -117,7 +117,7 @@ RCT_REMAP_METHOD(registerAndEnrollAccount,
                     usleep(10000);
                 }
                 if(configurations){
-                    resolve(IntuneMAMPolicyManager);
+                    resolve(policyManager);
                 }
                 else{
                     NSError *err = [NSError errorWithDomain:@"INTUNE"
