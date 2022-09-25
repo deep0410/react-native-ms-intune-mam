@@ -117,7 +117,7 @@ RCT_REMAP_METHOD(registerAndEnrollAccount,
                     usleep(10000);
                 }
                 if(configurations){
-                    resolve( @"success" );
+                    resolve(IntuneMAMPolicyManager);
                 }
                 else{
                     NSError *err = [NSError errorWithDomain:@"INTUNE"
