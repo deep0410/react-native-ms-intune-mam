@@ -99,7 +99,7 @@ RCT_REMAP_METHOD(registerAndEnrollAccount,
                 while (TRUE)
                 {
                     
-                    NSArray<NSDictionary*>* configurations = [[configManager appConfigForIdentity:identity] fullData];
+                    configurations = [[configManager appConfigForIdentity:identity] fullData];
                     
                     if (configurations)
                     {
