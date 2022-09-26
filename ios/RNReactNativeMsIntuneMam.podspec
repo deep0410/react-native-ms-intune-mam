@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
   s.name         = "RNReactNativeMsIntuneMam"
-  s.version      = "1.0.0"
+  s.version      = "1.0.2"
   s.summary      = "RNReactNativeMsIntuneMam"
   s.description  = <<-DESC
                   RNReactNativeMsIntuneMam
@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
 
-  s.dependency "React"
+  s.dependency "React-Core"
   #s.dependency "others"
 
 end
