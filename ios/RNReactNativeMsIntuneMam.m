@@ -83,10 +83,8 @@ RCT_REMAP_METHOD(registerAndEnrollAccount,
             @try{
                 IntuneMAMPolicyManager* policyManager = [IntuneMAMPolicyManager instance];
                 NSString* primaryUser = [policyManager primaryUser];
-                NSLog(policyManager);
                 [policyManager setProcessIdentity:identity];
                 NSString* uiIdentity = [policyManager getUIPolicyIdentity];
-                NSLog(@"text is %@.", uiIdentity);
                 [policyManager setUIPolicyIdentity:identity
                                  completionHandler:^(IntuneMAMSwitchIdentityResult result) {
                                      
@@ -99,7 +97,7 @@ RCT_REMAP_METHOD(registerAndEnrollAccount,
                 while (TRUE)
                 {
                     
-                    configurations = [[configManager appConfigForIdentity:identity] fullData];
+                    NSArray<NSDictionary*>* configurations = [[configManager appConfigForIdentity:identity] fullData];
                     
                     if (configurations)
                     {
@@ -117,7 +115,7 @@ RCT_REMAP_METHOD(registerAndEnrollAccount,
                     usleep(10000);
                 }
                 if(configurations){
-                    resolve(policyManager);
+                    resolve( @"success" );
                 }
                 else{
                     NSError *err = [NSError errorWithDomain:@"INTUNE"
