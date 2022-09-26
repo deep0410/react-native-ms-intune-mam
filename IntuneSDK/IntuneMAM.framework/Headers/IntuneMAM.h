@@ -2,13 +2,25 @@
 //  Copyright (c) Microsoft Corporation. All rights reserved.
 //
 
-#import <IntuneMAM/IntuneMAMAppConfigManager.h>
-#import <IntuneMAM/IntuneMAMDataProtectionInfo.h>
-#import <IntuneMAM/IntuneMAMDataProtectionManager.h>
-#import <IntuneMAM/IntuneMAMEnrollmentManager.h>
-#import <IntuneMAM/IntuneMAMFileProtectionInfo.h>
-#import <IntuneMAM/IntuneMAMFileProtectionManager.h>
-#import <IntuneMAM/IntuneMAMPolicyDelegate.h>
-#import <IntuneMAM/IntuneMAMPolicyManager.h>
-#import <IntuneMAM/IntuneMAMLogger.h>
-#import <IntuneMAM/IntuneMAMVersionInfo.h>
+#import "IntuneMAMAppConfigManager.h"
+#import "IntuneMAMAppConfig.h"
+#import "IntuneMAMComplianceManager.h"
+#import "IntuneMAMDataProtectionInfo.h"
+#import "IntuneMAMDataProtectionManager.h"
+#import "IntuneMAMDefs.h"
+#import "IntuneMAMDiagnosticConsole.h"
+#import "IntuneMAMEnrollmentDelegate.h"
+#import "IntuneMAMEnrollmentManager.h"
+#import "IntuneMAMEnrollmentStatus.h"
+#import "IntuneMAMFile.h"
+#import "IntuneMAMFileProtectionInfo.h"
+#import "IntuneMAMFileProtectionManager.h"
+#import "IntuneMAMLogger.h"
+#import "IntuneMAMPolicy.h"
+#import "IntuneMAMPolicyDelegate.h"
+#import "IntuneMAMPolicyManager.h"
+#import "IntuneMAMSettings.h"
+#import "IntuneMAMVersionInfo.h"
+#import "IntuneMAMUIHelper.h"
+#import "IntuneMAMCertificatePinningManager.h"
+#import "IntuneMAMUserStatusManager.h"

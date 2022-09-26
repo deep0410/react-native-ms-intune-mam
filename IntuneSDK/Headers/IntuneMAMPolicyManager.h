@@ -2,22 +2,42 @@
 //  Copyright (c) Microsoft Corporation. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "IntuneMAMPolicyDelegate.h"
-#import "IntuneMAMPolicy.h"
 #import "IntuneMAMLogger.h"
-#import "IntuneMAMDefs.h"
+#import "IntuneMAMPolicy.h"
+#import "IntuneMAMPolicyDelegate.h"
+#import <UIKit/UIKit.h>
 
 // Notification name for Intune application policy change notifications.
 // Applications can register for notifications using the default NSNotificationCenter.
 // The NSNotification passed to the observer will contain the IntuneMAMPolicyManager instance
 // as the object and userInfo will be nil.
-extern NSString* const IntuneMAMPolicyDidChangeNotification;
+__attribute__((visibility("default")))
+extern NSString*_Nonnull const IntuneMAMPolicyDidChangeNotification;
 
+// Notification posted after the Intune SDK completes wiping the managed account.
+__attribute__((visibility("default")))
+extern NSString*_Nonnull const IntuneMAMWipeDidCompleteNotification;
 
+// MAM policy source
+typedef NS_ENUM(NSInteger, IntuneMAMPolicySource)
+{
+    IntuneMAMPolicySource_MDM = 0,      //  the policy is from the MDM channel
+    IntuneMAMPolicySource_MAM = 1,      //  the policy is from the MAM channel
+    IntuneMAMPolicySource_Other = 2,
+};
+
+// MAM web view policy
+typedef NS_ENUM(NSInteger, IntuneMAMWebViewPolicy)
+{
+    IntuneMAMWebViewPolicyUnset = 0,            // the web view will be treated according to the TreatAllWebviewsAsUnmanaged flag
+    IntuneMAMWebViewPolicyUnmanaged = 1,        // the web view will be treated as unmanaged
+    IntuneMAMWebViewPolicyCurrentIdentity = 2,  // the web view will be treated as the current ui identity
+};
+
+__attribute__((visibility("default")))
 @interface IntuneMAMPolicyManager : NSObject
 
-+ (IntuneMAMPolicyManager*) instance;
++ (IntuneMAMPolicyManager*_Nonnull) instance;
 
 // setUIPolicyIdentity attempts to switch the UI thread identity to the specified user.
 // If the specified user is managed, the SDK will run the conditional launch checks and
@@ -44,8 +64,22 @@ extern NSString* const IntuneMAMPolicyDidChangeNotification;
 //
 // The empty string may be passed in as the identity to represent 'no user' or an unknown personal account.
 // If nil is passed in, the UI identity will fallback to the process identity.
-- (void) setUIPolicyIdentity:(NSString*)identity completionHandler:(void (^)(IntuneMAMSwitchIdentityResult))completionHandler;
-- (NSString*) getUIPolicyIdentity;
+- (void) setUIPolicyIdentity:(NSString*_Nullable)identity completionHandler:(void (^_Nullable)(IntuneMAMSwitchIdentityResult))completionHandler;
+- (void) setUIPolicyIdentity:(NSString*_Nullable)identity forWindow:(UIWindow*_Nullable)window completionHandler:(void (^_Nullable)(IntuneMAMSwitchIdentityResult))completionHandler;
+- (void) setUIPolicyAccountId:(NSString*_Nullable)accountId completionHandler:(void (^_Nullable)(IntuneMAMSwitchIdentityResult))completionHandler;
+- (void) setUIPolicyAccountId:(NSString*_Nullable)accountId forWindow:(UIWindow*_Nullable)window completionHandler:(void (^_Nullable)(IntuneMAMSwitchIdentityResult))completionHandler;
+
+// Returns the UI identity for the current key window.
+- (NSString*_Nullable) getUIPolicyIdentity;
+
+// Returns the UI AccountId (e.g. 3ec2c00f-b125-4519-acf0-302ac3761822) for the current key window.
+- (NSString*_Nullable) getUIPolicyAccountId;
+
+// Returns the UI identity for the specified window.
+- (NSString*_Nullable) getUIPolicyIdentityForWindow:(UIWindow*_Nullable)window;
+
+// Returns the UI AccountId (e.g. 3ec2c00f-b125-4519-acf0-302ac3761822) for the specified window.
+- (NSString*_Nullable) getUIPolicyAccountIdForWindow:(UIWindow*_Nullable)window;
 
 // setCurrentThreadIdentity sets the identity of the current thread which is used to determine what
 // policy should be applied on the current thread. Unlike setting setUIPolicyIdentity, this method
@@ -55,83 +89,102 @@ extern NSString* const IntuneMAMPolicyDidChangeNotification;
 //
 // The empty string may be passed in as the identity to represent 'no user' or an unknown personal account.
 // If nil is passed in, the thread identity will fallback to the process identity.
-- (void) setCurrentThreadIdentity:(NSString*)identity;
-- (NSString*) getCurrentThreadIdentity;
+- (void) setCurrentThreadIdentity:(NSString*_Nullable)identity  NS_SWIFT_UNAVAILABLE("Use the IntuneMAMSwiftContextManager.setIdentity(_ :forScope:) APIs instead.") __deprecated_msg("Use setCurrentThreadIdentity:forScope: instead.");
+
+// setCurrentThreadAccountId sets the AccountId (e.g. 3ec2c00f-b125-4519-acf0-302ac3761822) of the current thread which is used to determine what
+// policy should be applied on the current thread. Unlike setting setUIPolicyAccountId, this method
+// will not run the conditional launch policy checks for the user.
+//
+// The current thread AccountId overrides the process AccountId if set.
+//
+// The empty string may be passed in as the accountId to represent 'no user' or an unknown personal account.
+// If nil is passed in, the thread AccountId will fallback to the process AccountId.
+- (void) setCurrentThreadAccountId:(NSString*_Nullable)accountId  NS_SWIFT_UNAVAILABLE("Use the IntuneMAMSwiftContextManager.setAccountId(_ :forScope:) APIs instead.") __deprecated_msg("Use setCurrentThreadAccountId:forScope: instead.");
+
+// Similar to the setCurrentThreadIdentity:, setCurrentThreadIdentity:forScope: will set the current thread identity but only for the scope of the passed block
+// It is preferable to use scoped thread identities to ensure that they are only set for a specified scope and will have a guaranteed removal.
+- (void) setCurrentThreadIdentity:(NSString*_Nullable)identity forScope:(void(^_Nullable)(void))scope  NS_SWIFT_UNAVAILABLE("Use the IntuneMAMSwiftContextManager.setIdentity(_ :forScope:) APIs instead.");
+
+// setCurrentThreadAccountId:forScope: will set the current thread AccountId (e.g. 3ec2c00f-b125-4519-acf0-302ac3761822) but only for the scope of the passed block
+// It is preferable to use scoped thread identities to ensure that they are only set for a specified scope and will have a guaranteed removal.
+- (void) setCurrentThreadAccountId:(NSString*_Nullable)accountId forScope:(void(^_Nullable)(void))scope  NS_SWIFT_UNAVAILABLE("Use the IntuneMAMSwiftContextManager.setAccountId(_ :forScope:) APIs instead.");
+
+- (NSString*_Nullable) getCurrentThreadIdentity;
+
+// Return current thread AccountId (e.g. 3ec2c00f-b125-4519-acf0-302ac3761822).
+- (NSString*_Nullable) getCurrentThreadAccountId;
 
 // setProcessIdentity sets the process wide identity.
-- (void) setProcessIdentity:(NSString*)identity;
-- (NSString*) getProcessIdentity;
+- (void) setProcessIdentity:(NSString*_Nullable)identity;
+- (NSString*_Nullable) getProcessIdentity;
+
+// setProcessIdentity sets the process wide AccountId (e.g. 3ec2c00f-b125-4519-acf0-302ac3761822).
+- (void) setProcessAccountId:(NSString*_Nullable)accountId;
+- (NSString*_Nullable) getProcessAccountId;
 
 // Returns the identity of the user which initiated the current activity.
 // This method can be called within the openURL handler to retrieve the sender's identity.
-- (NSString*) getIdentityForCurrentActivity;
+- (NSString*_Nullable) getIdentityForCurrentActivity;
+
+// Returns the AccountId (e.g. 3ec2c00f-b125-4519-acf0-302ac3761822) of the user which initiated the current activity.
+// This method can be called within the openURL handler to retrieve the sender's AccountId.
+- (NSString*_Nullable) getAccountIdForCurrentActivity;
 
 // Returns TRUE if Intune management policy is applied or required for the application.
 // Returns FALSE if no Intune management policy is applied and policy is not required.
 - (BOOL) isManagementEnabled;
 
 // Returns TRUE if the specified identity is managed.
-- (BOOL) isIdentityManaged:(NSString*)identity;
+- (BOOL) isIdentityManaged:(NSString*_Nullable)identity;
+
+// Returns TRUE if the specified accountId (e.g. 3ec2c00f-b125-4519-acf0-302ac3761822) is managed.
+- (BOOL) isAccountIdManaged:(NSString*_Nullable)accountId;
 
 // Returns TRUE if the two identities are equal. This method performs a case insensitive compare
 // as well as comparing the AAD object ids of the identities (if known) to determine if the identities
 // are the same.
-- (BOOL) isIdentity:(NSString*)identity1 equalTo:(NSString*)identity2;
+- (BOOL) isIdentity:(NSString*_Nullable)identity1 equalTo:(NSString*_Nullable)identity2;
 
 // Returns an object that can be used to retrieve the MAM policy for the current thread identity.
-- (id<IntuneMAMPolicy>) policy;
+- (_Nullable id  <IntuneMAMPolicy>) policy;
 
 // Returns an object that can be used to retrieve the MAM policy for the specified identity.
-- (id<IntuneMAMPolicy>) policyForIdentity:(NSString*)identity;
+- (_Nullable id<IntuneMAMPolicy>) policyForIdentity:(NSString*_Nullable)identity;
 
+// Returns an object that can be used to retrieve the MAM policy for the specified AccountId (e.g. 3ec2c00f-b125-4519-acf0-302ac3761822).
+- (_Nullable id<IntuneMAMPolicy>) policyForAccountId:(NSString*_Nullable)accountId;
+
+// Returns an object that can be used to retrieve the MAM policy for the specified window.
+- (_Nullable id<IntuneMAMPolicy>) policyForWindow:(UIWindow*_Nullable)window;
+
+// Sets an IntuneMAMWebViewPolicyDelegate for the passed in WKWebView or SFSafariViewController.
+// This delegate should be set for each WKWebView or SFSafariViewController being used to access
+// arbitrary URLs or URLs that might access external data. See IntuneMAMPolicyDelegate.h for more
+// information about this delegate and if it needs to be set.
+- (void) setWebViewPolicyDelegate:(id<IntuneMAMWebViewPolicyDelegate>_Nullable)delegate forWebViewer:(id _Nonnull)webViewer;
+
+// Sets an IntuneMAMWebViewPolicy value for the passed in UIView or UIViewController. This web
+// view policy value will apply to any current or future child WKWebViews of the webViewer. A
+// WKWebView can also be passed in directly as the webViewer. The passed in webViewPolicy will
+// overwrite the TreatAllWebViewsAsUnmanaged flag for the passed in webViewer and its children.
+- (void) setWebViewPolicy:(IntuneMAMWebViewPolicy)webViewPolicy forWebViewer:(id _Nonnull)webViewer;
 
 // Returns the account name of the primary user in upn format (e.g. user@contoso.com).
-@property (readonly) NSString* primaryUser;
+@property (readonly) NSString* _Nullable primaryUser;
+
+// Returns the account name of the primary user in AccountId format (e.g. 3ec2c00f-b125-4519-acf0-302ac3761822).
+@property (readonly) NSString* _Nullable primaryAccountId;
 
 // The delegate property is used to notify the application of certain policy actions that
-// it should perform. See IntuneMDMPolicyDelegate.h for more information.
+// it should perform. See IntuneMAMPolicyDelegate.h for more information.
 // This property must be set by the time the application's UIApplicationDelegate
 // application:willFinishLaunchingWithOptions method returns.
-@property (nonatomic,strong) id<IntuneMAMPolicyDelegate> delegate;
+@property (nonatomic,strong, nullable) id<IntuneMAMPolicyDelegate> delegate;
 
 // Logger used by the Intune MAM SDK.
-@property (nonatomic,strong) id<IntuneMAMLogger> logger;
+@property (nonatomic,strong, nullable) id<IntuneMAMLogger> logger;
 
-// Indicate if telemetry is opted-in or not.
-@property (nonatomic) BOOL telemetryEnabled;
-
-// Specifies which AAD authority URI the SDK should use. This property should be set
-// if the application dynamically determines the AAD authority URI. If the authority
-// URI is static, the ADALAuthority value under the IntuneMAMSettings dictionary should
-// be used instead. This value is persisted across application launches and cleared when
-// a user is unenrolled from MAMService.
-@property (nonatomic,strong) NSString* aadAuthorityUriOverride;
-
-// Specifies AAD redirect URI the SDK should use. This property should be set
-// if the application dynamically determines the AAD redirect URI. If the redirect
-// URI is static, the ADALRedirectUri value under the IntuneMAMSettings dictionary should
-// be used instead. This value is persisted across application launches and cleared when
-// a user is unenrolled from MAMService.
-@property (nonatomic,strong) NSString* aadRedirectUriOverride;
-
-// Specifies AAD client ID the SDK should use. This property should be set
-// if the application dynamically determines the AAD client ID. If the client
-// ID is static, the ADALClientId value under the IntuneMAMSettings dictionary should
-// be used instead. This value is persisted across application launches and cleared when
-// a user is unenrolled from MAMService.
-@property (nonatomic,strong) NSString* aadClientIdOverride;
-
-
-#pragma mark - Diagnostics
-
-// Returns a dictionary of diagnostic information
--(NSDictionary*) getDiagnosticInformation;
-
-// Returns an array containing the string paths of the Intune SDK log files
-// including the standard log file and the diagnostic log file.
-// These files can then be uploaded to a back-end of the application's choosing.
-- (NSArray*) getIntuneLogPaths;
+// Returns the method used to obtain the Intune MAM policy. Use this property for telemetry or logging purposes.
+@property (nonatomic,readonly) IntuneMAMPolicySource mamPolicySource;
 
 @end
-
-

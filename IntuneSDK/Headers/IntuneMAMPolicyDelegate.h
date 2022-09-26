@@ -4,11 +4,18 @@
 
 #import <Foundation/Foundation.h>
 #import "IntuneMAMDefs.h"
+#import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSUInteger, IntuneMAMIdentitySwitchReason)
 {
+    // An identity switch is required so that a URL can be opened
     IntuneMAMIdentitySwitchOpenURL,
-    IntuneMAMIdentitySwitchCancelConditionalLaunch
+    
+    // An identity switch is required because the user has cancelled conditional launch
+    IntuneMAMIdentitySwitchCancelConditionalLaunch,
+    
+    // An identity switch is required so that one or more documents can be imported
+    IntuneMAMIdentitySwitchDocumentImport
 };
 
 typedef NS_ENUM(NSUInteger, IntuneMAMAddIdentityResult)
@@ -18,6 +25,7 @@ typedef NS_ENUM(NSUInteger, IntuneMAMAddIdentityResult)
 };
 
 
+__attribute__((visibility("default")))
 @protocol IntuneMAMPolicyDelegate <NSObject>
 
 @optional
@@ -32,16 +40,26 @@ typedef NS_ENUM(NSUInteger, IntuneMAMAddIdentityResult)
 // Authentication UI after an application resume.
 // The completion handler can be called on any thread.
 // The application does not have to call setUIPolicyIdentity in response to this call.
-- (void) identitySwitchRequired:(NSString*)identity reason:(IntuneMAMIdentitySwitchReason)reason completionHandler:(void (^)(IntuneMAMSwitchIdentityResult))completionHandler;
+- (void) identitySwitchRequired:(NSString*_Nonnull)identity reason:(IntuneMAMIdentitySwitchReason)reason completionHandler:(void (^_Nonnull)(IntuneMAMSwitchIdentityResult))completionHandler;
+- (void) identitySwitchRequired:(NSString*_Nonnull)identity forWindow:(UIWindow*_Nonnull)window reason:(IntuneMAMIdentitySwitchReason)reason completionHandler:(void (^_Nonnull)(IntuneMAMSwitchIdentityResult))completionHandler;
+
+- (void) identitySwitchRequiredForAccountId:(NSString*_Nonnull)accountId reason:(IntuneMAMIdentitySwitchReason)reason completionHandler:(void (^_Nonnull)(IntuneMAMSwitchIdentityResult))completionHandler;
+- (void) identitySwitchRequiredForAccountId:(NSString*_Nonnull)accountId forWindow:(UIWindow*_Nonnull)window reason:(IntuneMAMIdentitySwitchReason)reason completionHandler:(void (^_Nonnull)(IntuneMAMSwitchIdentityResult))completionHandler;
 
 // Called by the Intune SDK when the application should wipe data for the
 // specified account user principal name (e.g. user@contoso.com).
 // Returns TRUE if successful, FALSE if the account data could not be completely wiped.
-- (BOOL) wipeDataForAccount:(NSString*)upn;
+- (BOOL) wipeDataForAccount:(NSString*_Nonnull)upn;
+
+// Called by the Intune SDK when the application should wipe data for the
+// specified account AccountId (e.g. 3ec2c00f-b125-4519-acf0-302ac3761822).
+// Returns TRUE if successful, FALSE if the account data could not be completely wiped.
+- (BOOL) wipeDataForAccountId:(NSString*_Nonnull)accountId;
 
 // Called by the Intune SDK when the application needs to restart
-// because policy has been received for the first time.  This method
-// is called on a background thread.
+// because policy has been received for the first time, or if we're handling a mam-ca remediation
+// and are restarting as a part of a SW because we need to remove an existing user.
+// This method is called on a background thread.
 // Returns TRUE if the host application will restart on its own.
 // Returns FALSE if the host application wants the Intune SDK to handle the restart
 - (BOOL) restartApplication;
@@ -50,6 +68,38 @@ typedef NS_ENUM(NSUInteger, IntuneMAMAddIdentityResult)
 // automatically enrolled by the SDK. The application must call the completion handler passing in
 // IntuneMAMAddIdentityResultSuccess if the app is able to add the identity or IntuneMAMAddIdentityResultFailed otherwise.
 // The completion handler can be called on any thread.
-- (void) addIdentity:(NSString*)identity completionHandler:(void (^)(IntuneMAMAddIdentityResult))completionHandler;
+- (void) addIdentity:(NSString*_Nonnull)identity completionHandler:(void (^_Nonnull)(IntuneMAMAddIdentityResult))completionHandler;
+
+
+// Called by the Intune SDK when the application needs to add an user account by AccountId (e.g. 3ec2c00f-b125-4519-acf0-302ac3761822) as the app has been
+// automatically enrolled by the SDK. The application must call the completion handler passing in
+// IntuneMAMAddIdentityResultSuccess if the app is able to add the AccountId or IntuneMAMAddIdentityResultFailed otherwise.
+// The completion handler can be called on any thread.
+- (void) addAccountId:(NSString*_Nonnull)accountId completionHandler:(void (^_Nonnull)(IntuneMAMAddIdentityResult))completionHandler;
+
+@end
+
+__attribute__((visibility("default")))
+@protocol IntuneMAMWebViewPolicyDelegate <NSObject>
+
+@required
+/**
+ * We will call this method each time we navigate to a new URL under a managed account in the WKWebView or
+ * SFSafariViewController this delegate is tied to. It will use the result to decide whether we need to restrict access to it.
+ * Returning YES will indicate to the SDK that the site being navigated to is an unmanaged external site and should be
+ * opened with proper protections. Returning NO will indicate to the SDK that the site being navigated to is an internal
+ * site that the app knows is managed, meaning the SDK does not need to restrict access to it. If this delegate method
+ * is not implemented, it will assume all URLs in this web view are managed sites.
+ *
+ * (Note: This method only needs to be implemented if your app is using WKWebViews or SFSafariViewControllers to
+ * display arbitrary URLs. Not implementing it is the same as always returning NO. If all the web views presented within
+ * the app are being used for accessing non-corporate data, TreatAllWebViewsAsUnmanaged can be set as YES in the
+ * app's Info.plist under IntuneMAMSettings. This setting will ensure that pasteboard content is not leaked through any
+ * web views.)
+ *
+ * @param url - the URL the web view will be navigating to
+ * @return a BOOL representing if the URL is an external unmanaged URL.
+ */
+- (BOOL) isExternalURL:(NSURL* _Nonnull) url;
 
 @end
