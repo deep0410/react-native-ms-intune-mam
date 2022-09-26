@@ -105,14 +105,14 @@ RCT_REMAP_METHOD(registerAndEnrollAccount,
                         break;
                     }
                     
-                    if ([date timeIntervalSinceNow] < -10)
+                    if ([date timeIntervalSinceNow] < -60)
                     {
                         // the condition is not reached before timeout
                         break;
                     }
                     
                     // adapt this value in microseconds.
-                    usleep(10000);
+                    usleep(10000000);
                 }
                 if(configurations){
                     resolve( @"success" );
