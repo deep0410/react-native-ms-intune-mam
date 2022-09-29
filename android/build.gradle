@@ -65,13 +65,12 @@ allprojects {
 }
 
 dependencies {
+    api fileTree(dir: '../IntuneSDK/android/libs', include: ['*.jar'])
+    api "com.facebook.react:react-native:+"
     // implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "com.facebook.soloader:soloader:0.10.4+"
-    implementation "com.facebook.react:react-native:+"  // From node_modules
-
+    api "com.facebook.soloader:soloader:0.10.4+"
      // Include the MAM SDK
-    implementation files('libs/Microsoft.Intune.MAM.SDK.jar')
-
+    // implementation files('libs/Microsoft.Intune.MAM.SDK.jar')
     // Include MSAL
-    implementation 'com.microsoft.identity.client:msal:2.0.8'
+    // implementation 'com.microsoft.identity.client:msal:2.0.8'
 }
